@@ -1,6 +1,5 @@
 package automation.pages;
 
-import automation.drivers.DriverSingleton;
 import automation.utils.Constants;
 import automation.utils.Utils;
 import org.openqa.selenium.WebDriver;
@@ -10,14 +9,16 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HomePage {
-    private WebDriver driver;
+    private final WebDriver driver;
     private WebDriverWait wait;
     private Actions hover;
 
-    public HomePage() {
-        driver = DriverSingleton.getDriver();
+    public HomePage(WebDriver driver) {
+        this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
@@ -62,6 +63,10 @@ public class HomePage {
 
     @FindBy(css = "#center_column > ul > li > div > div.left-block > div > a.product_img_link > img")
     private WebElement searchResults;
+
+    public void goTo(String url) {
+        driver.get(url);
+    }
 
     public Boolean searchElement(String searchStr) {
         searchBar.sendKeys(searchStr);

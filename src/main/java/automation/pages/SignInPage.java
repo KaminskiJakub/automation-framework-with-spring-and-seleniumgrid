@@ -1,17 +1,18 @@
 package automation.pages;
 
-import automation.drivers.DriverSingleton;
 import automation.utils.Utils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SignInPage {
-    private WebDriver driver;
+    private final WebDriver driver;
 
-    public SignInPage() {
-        this.driver = DriverSingleton.getDriver();
+    public SignInPage(WebDriver driver) {
+        this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 

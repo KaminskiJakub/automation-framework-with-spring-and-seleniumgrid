@@ -1,6 +1,5 @@
 package automation.pages;
 
-import automation.drivers.DriverSingleton;
 import automation.utils.Constants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,13 +7,15 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CheckoutPage {
-    private WebDriver driver;
+    private final WebDriver driver;
     private WebDriverWait wait;
 
-    public CheckoutPage() {
-        driver = DriverSingleton.getDriver();
+    public CheckoutPage(WebDriver driver) {
+        this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 

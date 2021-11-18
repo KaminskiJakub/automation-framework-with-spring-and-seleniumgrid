@@ -1,5 +1,6 @@
 # automation framework with spring
-This project shows how SpringBoot can be used in automation testing framework.
+This project shows how SpringBoot can be used in automation testing framework with the usage of selenium grid. 
+It is a project automation-framework-with-spring, but appropriately refactored, so multiple drivers could run at once (parallel testing in action).  
 
 ## Table of content 
 * [General Info](#general-information)
@@ -17,17 +18,26 @@ This project shows how SpringBoot can be used in automation testing framework.
 ## General Information
 - Purpose of this project is to demonstrate how an automation framework may look like with the support of SpringBoot.
 - Framework is created as Maven project, it focuses on User Interface (web shop) and test cases are written with BDD approach (with support of Cucumber and Gherkin language). For reporting there is Extent Report used, and for logging Log4j. CI works with Github Actions.
+- Selenium Grid is used, so multiple drivers can run at once and parallel testing is possible.
 
+## Grid
+- There is 1 Hub and 2 Nodes. Configuration JSON files are created with localhost:4444 as a port address and are attached to the framework. 
+- TestNG is used in help for parallel testing (dependencies are added to pom.xml including dependency connecting cucumber and testng).
+- Code from framework automation-framework-with-spring is refactored. 
+- Parallel tests run on Chrome Driver and this driver was changed, so it could perform it. RemoteDriver is implemented for this driver.
+- Singleton pattern had to be removed, because Singleton cannot be instantiated multiple times (in parallel testing purpose). 
+In `pages` package Pages classes were refactored with Spring features (with @Component annotation) and constructor changes regarding WebDriver object.
+  WebDriver itself is now instantiated in AutomationFrameworkConfiguration class and there is also browser strategy implementation present. 
+  `StepDefiniton` class is also refactored. @Autowired annotation is added there for injecting components at run time. Another driver instantiations are deleted, because they aren't needed any more. 
+- For running tests in parallel with TestNG support class `RunTestsInParallel` is created in `automation` package. Thanks to that (`scenarios()` method) two instances of Chrome driver will be used
 
 ## Design patterns
 - There is design pattern used for Selenium: POM (Page Object Model) with the usage of Page Factory class.
     - POM is a design pattern used in Selenium, where we create an object repository to store web elements. Package `pages` consists java classes in which there are locators present which correspond to WebElements on specific pages.
       PageFactory is a way of implementing the POM.
       
-- There are also 2 design patterns: Singleton and Strategy.
-  - Strategy Pattern is used in Web Drivers, because I want to check more just than one driver.
-  - Singleton Pattern is used in connection to Web Driver. I want a single instance of a driver to be reachable from any place from a code. 
-   
+- There is also Strategy design pattern used.
+  - Strategy Pattern is used in Web Drivers, because I want to check more just than one driver.   
 
 ## Features
 - There are 2 basic BDD scenarios in `features` package : SignIn and Checkout. 
@@ -88,6 +98,6 @@ This project shows how SpringBoot can be used in automation testing framework.
     
 
 ## Room for Improvement 
-- As mentioned above, the idea of this project was to put focus on spring functionalities, so there are only basic features created.
+- As mentioned above, the idea of this project was to put focus on spring functionalities with selenium grid, so there are only basic features created.
   In time README file can be improved and implementation of new features can also grow.
   

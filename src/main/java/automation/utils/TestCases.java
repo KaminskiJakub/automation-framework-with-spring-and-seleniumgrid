@@ -4,7 +4,7 @@ public enum TestCases {
     T1("Testing the authentication"),
     T2("Testing the purchase of two items");
 
-    private String testName;
+    private final String testName;
 
     TestCases(String value) {
         this.testName = value;
