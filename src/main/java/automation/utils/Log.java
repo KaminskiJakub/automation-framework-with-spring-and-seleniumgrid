@@ -6,7 +6,7 @@ import org.apache.log4j.xml.DOMConfigurator;
 import java.io.File;
 
 public class Log {
-    private static Logger logger = Logger.getLogger(Log.class.getName());
+    private static final Logger logger = Logger.getLogger(Log.class.getName());
 
     public static Logger getLogData(String className) {
         String path = new File("").getAbsolutePath();

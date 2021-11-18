@@ -1,7 +1,6 @@
 package automation.glue;
 
 import automation.config.AutomationFrameworkConfiguration;
-import automation.drivers.DriverSingleton;
 import automation.pages.CheckoutPage;
 import automation.pages.HomePage;
 import automation.pages.SignInPage;
@@ -15,7 +14,6 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -24,22 +22,20 @@ import static org.junit.Assert.assertTrue;
 
 @ContextConfiguration(classes = AutomationFrameworkConfiguration.class)
 public class StepDefinition {
-    private WebDriver driver;
-    private HomePage homePage;
-    private SignInPage signInPage;
-    private CheckoutPage checkoutPage;
     ExtentTest test;
     static ExtentReports report = new ExtentReports("report/TestReport.html");
 
+    @Autowired
+    private HomePage homePage;
+    @Autowired
+    private SignInPage signInPage;
+    @Autowired
+    private CheckoutPage checkoutPage;
     @Autowired
     ConfigurationProperties configurationProperties;
 
     @Before
     public void initializeObjects() {
-        DriverSingleton.getInstance(configurationProperties.getBrowser());
-        homePage = new HomePage();
-        signInPage = new SignInPage();
-        checkoutPage = new CheckoutPage();
         TestCases[] tests = TestCases.values();
         test = report.startTest(tests[Utils.testCount].getTestName());
         Log.getLogData(Log.class.getName());
@@ -49,8 +45,7 @@ public class StepDefinition {
 
     @Given("^I go to the Website")
     public void i_go_to_the_Website() {
-        driver = DriverSingleton.getDriver();
-        driver.get(Constants.URL);
+        homePage.goTo(Constants.URL);
         Log.info("INFO: Navigating to " + Constants.URL);
         test.log(LogStatus.PASS, "Navigating to " + Constants.URL);
     }
@@ -114,6 +109,5 @@ public class StepDefinition {
     public void closeObjects() {
         report.endTest(test);
         report.flush();
-        DriverSingleton.closeObjectInstance();
     }
 }
